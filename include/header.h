@@ -6,7 +6,7 @@
 /*   By: amarzial <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 14:09:59 by amarzial          #+#    #+#             */
-/*   Updated: 2018/03/06 12:54:57 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/03/15 12:49:38 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ struct mach_header_64 {
 	uint32_t	flags;		/* flags */
 	uint32_t	reserved;	/* reserved */
 };
+
+#define	LC_SEGMENT_64	0x19 /* 64-bit segment of this file to be mapped */	
 
 struct segment_command {
   uint32_t  cmd;
