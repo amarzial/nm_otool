@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   otool.c                                            :+:      :+:    :+:   */
+/*   nm.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amarzial <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/26 14:09:47 by amarzial          #+#    #+#             */
-/*   Updated: 2018/03/17 12:06:28 by amarzial         ###   ########.fr       */
+/*   Created: 2018/03/17 17:15:47 by amarzial          #+#    #+#             */
+/*   Updated: 2018/03/17 17:56:22 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 typedef struct mach_header_64     t_header64;
 typedef struct segment_command_64 t_command64;
 typedef struct section_64         t_section64;
+typedef struct load_command       t_loadcmd;
+typedef struct symtab_command     t_symtabcmd;
+typedef struct nlist_64             t_nlist;
 
 void print_header_64(t_header64 *h)
 {
@@ -55,29 +58,66 @@ t_section64 *get_text_section(t_command64 *c)
     return seg;
 }
 
-void print_symtab(struct load_command *lc, void* begin) {
+/*static void print_symtab(struct load_command *lc, void *begin)
+{
     struct symtab_command *sc;
-    struct nlist_64 *nlist;
+    struct nlist_64 *      nlist;
+    unsigned int           i;
+
+    sc = (struct symtab_command *) lc;
+    i = 0;
+    nlist = (struct nlist_64 *) ((char *) begin + sc->symoff);
+    while (i < sc->nsyms)
+    {
+        ft_printf("%s\n", (char *) begin + (sc->stroff + nlist->n_un.n_strx));
+        ft_printf("  type: %#.2x\n  sect: %d\n  desc: %#.4x\n  value: %#.16x\n",
+                  nlist->n_type, nlist->n_sect, nlist->n_desc, nlist->n_value);
+        nlist = (struct nlist_64 *) ((char *) nlist + sizeof(struct nlist_64));
+        ++i;
+    }
+}*/
+
+static void print_symbols(const void *begin, const t_symtabcmd *tab)
+{
+    t_nlist *    lst;
     unsigned int i;
 
-    sc = (struct symtab_command*)lc;
-    i = 0;
-    nlist = (struct nlist_64*)((char*)begin + sc->symoff);
-    while (i < sc->nsyms) {
-	ft_printf("%s\n", (char*)begin + (sc->stroff + nlist->n_un.n_strx));
-	ft_printf("  type: %#.2x\n  sect: %d\n  desc: %#.4x\n  value: %#.16x\n", nlist->n_type, nlist->n_sect, nlist->n_desc, nlist->n_value);
-        nlist = (struct nlist_64*)((char*) nlist + sizeof(struct nlist_64));
-	++i; 
-}    
+    i = tab->nsyms;
+    lst = (t_nlist *) ((char *) begin + tab->symoff);
+    while (i--)
+    {
+        if ((lst->n_type & N_TYPE) == N_UNDF)
+            ft_printf("                ");
+        else
+            ft_printf("%.16x", lst->n_value);
+
+        ft_printf(" t %s\n", (char *) begin + tab->stroff + lst->n_un.n_strx);
+        lst = (t_nlist *) ((char *) lst + sizeof(t_nlist));
+    }
+}
+
+// DYSYMTAB too?
+static void print_symtab(const void *begin, size_t ncmds)
+{
+    t_loadcmd *  cmd;
+    t_symtabcmd *symtab;
+
+    cmd = (t_loadcmd *) ((char *) begin + sizeof(t_header64));
+    while (ncmds--)
+    {
+        if (cmd->cmd == LC_SYMTAB)
+        {
+            symtab = (t_symtabcmd *) cmd;
+            print_symbols(begin, symtab);
+        }
+        cmd = (t_loadcmd *) ((char *) cmd + cmd->cmdsize);
+    }
 }
 
 int main(int argc, char **argv)
 {
-    t_file_map   map;
-    t_header64 * h64;
-    struct load_command *lc;
-    unsigned int cmds;
-    size_t       offset;
+    t_file_map           map;
+    t_header64 *         h64;
 
     if (argc != 2)
         return (-1);
@@ -87,22 +127,7 @@ int main(int argc, char **argv)
         if (h64)
         {
             print_header_64(h64);
-            offset = sizeof(t_header64);
-            cmds = 0;
-            while (cmds < h64->ncmds)
-            {
-                lc = (void *) ((char *) map.ptr + offset);
-                print_command_64((t_command64*)lc, offset);
-                if (lc->cmd == LC_SEGMENT_64)
-                {
-                    get_text_section((t_command64*)lc);
-                }
-		else if (lc->cmd == LC_SYMTAB) {
-		    print_symtab(lc, map.ptr);
-		}
-                offset += lc->cmdsize;
-                ++cmds;
-            }
+            print_symtab(map.ptr, h64->ncmds);
         }
     }
 

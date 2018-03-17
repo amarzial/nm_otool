@@ -29,7 +29,7 @@ OTOOL = otool
 
 .PHONY: all clean fclean re link test
 
-all: $(OTOOL)
+all: $(NM) $(OTOOL)
 
 $(NM): $(OBJECTS) $(OBJECT_DIR)$(NM).o
 	make -C $(LIBFT_PATH)
