@@ -1,15 +1,23 @@
 SOURCE_FILES = file_mapper.c
 
+NM_SOURCE_FILES = nm_symbol_table.c \
+				  nm_sections.c \
+				  nm_sorted_print.c
+
 SOURCE_DIR = src/
 SOURCES = $(addprefix $(SOURCE_DIR), $(SOURCE_FILES))
+NM_SOURCES = $(addprefix $(SOURCE_DIR), $(SOURCE_FILES))
 
 
 OBJECT_FILES = $(SOURCE_FILES:.c=.o)
+NM_OBJECT_FILES = $(NM_SOURCE_FILES:.c=.o)
 OBJECT_DIR = obj/
 OBJECTS = $(addprefix $(OBJECT_DIR), $(OBJECT_FILES))
+NM_OBJECTS = $(addprefix $(OBJECT_DIR), $(NM_OBJECT_FILES))
 
 INCLUDE_FILES = header.h\
-				internal.h
+				internal.h\
+				nm.h
 INCLUDE_DIR = include/
 INCLUDES = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))
 
@@ -31,9 +39,9 @@ OTOOL = otool
 
 all: $(NM) $(OTOOL)
 
-$(NM): $(OBJECTS) $(OBJECT_DIR)$(NM).o
+$(NM): $(OBJECTS) $(NM_OBJECTS) $(OBJECT_DIR)$(NM).o
 	make -C $(LIBFT_PATH)
-	$(CC) $(DEBUG) -o $(NM) $(OBJECT_DIR)$(NM).o $(OBJECTS) $(LIBFT_PATH)libft.a
+	$(CC) $(DEBUG) -o $(NM) $(OBJECT_DIR)$(NM).o $(OBJECTS) $(NM_OBJECTS) $(LIBFT_PATH)libft.a
 
 $(OTOOL): $(OBJECTS) $(OBJECT_DIR)$(OTOOL).o
 	make -C $(LIBFT_PATH)

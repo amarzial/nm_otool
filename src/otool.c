@@ -6,7 +6,7 @@
 /*   By: amarzial <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 14:09:47 by amarzial          #+#    #+#             */
-/*   Updated: 2018/03/17 12:06:28 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/03/22 14:53:22 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 #include "libft.h"
 #include <mach-o/loader.h>
 #include <mach-o/nlist.h>
-
-typedef struct mach_header_64     t_header64;
-typedef struct segment_command_64 t_command64;
-typedef struct section_64         t_section64;
 
 void print_header_64(t_header64 *h)
 {
