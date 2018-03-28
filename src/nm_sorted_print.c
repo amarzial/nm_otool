@@ -6,7 +6,7 @@
 /*   By: amarzial <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/22 15:48:43 by amarzial          #+#    #+#             */
-/*   Updated: 2018/03/22 19:39:01 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/03/28 17:11:42 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void sort_and_print(t_list *symlist)
         if (!symbol->has_value)
             ft_printf("                ");
         else
-            ft_printf("%.16x", symbol->value);
+            ft_printf("%.16llx", symbol->value);
 
         ft_printf(" %c %s\n", symbol->type, symbol->name);
         symlist = symlist->next;
