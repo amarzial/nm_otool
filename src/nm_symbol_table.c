@@ -27,7 +27,9 @@ static char get_symbol_type(const t_nlist *nlist, t_list *slist)
 
     slist_len = ft_lstlen(slist);
     t = (nlist->n_type & N_TYPE);
-    if (t == N_UNDF)
+    if (nlist->n_type & N_STAB)
+        l = '-';
+    else if (t == N_UNDF)
         l = 'u';
     else if (t == N_ABS)
         l = 'a';
@@ -61,7 +63,8 @@ static void print_symbols(const void *begin, const t_symtabcmd *tab, t_list *sli
         }
         symbol.type = get_symbol_type(lst, slist);
         symbol.name = (char *) begin + tab->stroff + lst->n_un.n_strx;
-        ft_lstadd(&symlist, ft_lstnew(&symbol, sizeof(t_symbol)));
+        if (symbol.type != '-')
+            ft_lstadd(&symlist, ft_lstnew(&symbol, sizeof(t_symbol)));
         lst = (t_nlist *) ((char *) lst + sizeof(t_nlist));
     }
     sort_and_print(symlist);
