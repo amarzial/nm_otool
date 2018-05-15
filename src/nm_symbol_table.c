@@ -12,13 +12,6 @@
 
 #include "nm.h"
 
-static void delete_list(void *p, size_t size)
-{
-    (void) size;
-    if (p)
-        free(p);
-}
-
 static char get_symbol_type(const t_nlist *nlist, t_list *slist)
 {
     char          l;

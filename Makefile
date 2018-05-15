@@ -1,4 +1,5 @@
-SOURCE_FILES = file_mapper.c
+SOURCE_FILES = file_mapper.c \
+			   utils.c \
 
 NM_SOURCE_FILES = nm_symbol_table.c \
 				  nm_sections.c \

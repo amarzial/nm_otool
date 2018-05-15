@@ -34,4 +34,5 @@ typedef struct s_file_map
 
 int map_file(char *filename, t_file_map *map);
 
+void delete_list(void *p, size_t size);
 #endif
