@@ -1,5 +1,6 @@
 SOURCE_FILES = file_mapper.c \
 			   utils.c \
+			   archive_reader.c
 
 NM_SOURCE_FILES = nm_symbol_table.c \
 				  nm_sections.c \
@@ -19,6 +20,7 @@ NM_OBJECTS = $(addprefix $(OBJECT_DIR), $(NM_OBJECT_FILES))
 INCLUDE_FILES = header.h\
 				internal.h\
 				nm.h
+
 INCLUDE_DIR = include/
 INCLUDES = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))
 

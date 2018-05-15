@@ -6,18 +6,21 @@
 /*   By: amarzial <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/05 18:47:39 by amarzial          #+#    #+#             */
-/*   Updated: 2018/03/22 14:50:59 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/05/15 19:35:47 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef INTERNAL_H
 #define INTERNAL_H
 
+#include "libft.h"
+
+#include <ar.h>
+#include <mach-o/loader.h>
+#include <mach-o/nlist.h>
 #include <stddef.h>
 #include <sys/mman.h>
 #include <unistd.h>
-#include <mach-o/loader.h>
-#include <mach-o/nlist.h>
 
 typedef struct mach_header_64     t_header64;
 typedef struct segment_command_64 t_command64;
@@ -35,4 +38,10 @@ typedef struct s_file_map
 int map_file(char *filename, t_file_map *map);
 
 void delete_list(void *p, size_t size);
+
+int is_archive_file(const t_file_map *fm);
+t_list *get_archive_list(const t_file_map *fm);
+char *get_file_name(void *ptr);
+void *get_file_begin(void *ptr);
+
 #endif
