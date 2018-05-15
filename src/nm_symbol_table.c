@@ -6,7 +6,7 @@
 /*   By: amarzial <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/22 14:40:56 by amarzial          #+#    #+#             */
-/*   Updated: 2018/03/28 17:10:11 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/05/15 19:37:22 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,17 @@ static void print_symbols(const void *begin, const t_symtabcmd *tab, t_list *sli
 }
 
 // DYSYMTAB too?
-void print_symtab(const void *begin, size_t ncmds)
+void print_symtab(const void* ptr)
 {
     t_loadcmd *  cmd;
     t_symtabcmd *symtab;
     t_list *     slist;
+    t_header64 *h64;
+    int ncmds;
 
-    cmd = (t_loadcmd *) ((char *) begin + sizeof(t_header64));
+    h64 = (t_header64*)ptr;
+    ncmds = h64->ncmds;
+    cmd = (t_loadcmd *) ((char *) ptr + sizeof(t_header64));
     slist = NULL;
     while (ncmds--)
     {
@@ -85,6 +89,6 @@ void print_symtab(const void *begin, size_t ncmds)
         }
         cmd = (t_loadcmd *) ((char *) cmd + cmd->cmdsize);
     }
-    print_symbols(begin, symtab, slist);
+    print_symbols(ptr, symtab, slist);
     ft_lstdel(&slist, delete_list);
 }
