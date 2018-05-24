@@ -6,7 +6,7 @@
 /*   By: amarzial <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/17 17:15:47 by amarzial          #+#    #+#             */
-/*   Updated: 2018/05/15 19:43:14 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/05/18 12:22:23 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int is_mach_o(void *ptr)
     return (h64 && h64->magic == MH_MAGIC_64);
 }
 
-static void handle_archive(t_file_map *fm)
+static void handle_archive(t_file_map *fm, const char* archive_file)
 {
     t_list *lst;
     t_list *current;
@@ -59,8 +59,9 @@ static void handle_archive(t_file_map *fm)
         {
             if ((filename = get_file_name(*(void **) (current->content))) == NULL)
                 return; // memory error?
-            ft_printf("%p, %d: %s\n", *(void **) (current->content),
-                      *(void **) (current->content) - fm->ptr, filename);
+            if (current != lst)
+                ft_printf("\n");
+            ft_printf("%s(%s):\n", archive_file, filename);
             free(filename);
             print_symtab(get_file_begin(*(void **) current->content));
         }
@@ -80,7 +81,7 @@ int main(int argc, char **argv)
         if (is_mach_o(map.ptr))
             print_symtab(map.ptr);
         else if (is_archive_file(&map))
-            handle_archive(&map);
+            handle_archive(&map, argv[1]);
         else
         {
             ft_printf("Not a Mach-O file\n");
