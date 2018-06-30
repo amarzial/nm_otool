@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nm_sorted_print.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarzial <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/22 15:48:43 by amarzial          #+#    #+#             */
-/*   Updated: 2018/03/28 17:11:42 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/06/30 15:43:08 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 
 static int compare_symbol(t_symbol *s1, t_symbol *s2)
 {
-    return (ft_strcmp(s1->name, s2->name));
+    int     res;
+
+    res = ft_strcmp(s1->name, s2->name);
+    return (res != 0 ? res : s1->value > s2->value);
 }
 
 static void swap_nodes(t_list *n1, t_list *n2)
