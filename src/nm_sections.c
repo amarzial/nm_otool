@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nm_sections.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarzial <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/22 14:44:00 by amarzial          #+#    #+#             */
-/*   Updated: 2018/03/22 14:53:02 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/06/30 13:13:00 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char get_section(t_list *slist, uint8_t nsect, size_t slist_len)
     else if (ft_strncmp(sect->sectname, SECT_BSS, 16) == 0)
         return ('b');
     else if (ft_strncmp(sect->sectname, SECT_COMMON, 16) == 0)
-        return ('b');
+        return ('s');
     else
         return ('s');
 }
