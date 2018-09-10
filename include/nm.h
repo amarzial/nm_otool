@@ -24,8 +24,8 @@ typedef struct  s_symbol
   int has_value;
 }               t_symbol;
 
-int store_sections(t_command64 *cmd, t_list **lst);
-char get_section(t_list *slist, uint8_t nsect, size_t slist_len);
-void print_symtab(const void *ptr);
+int store_sections_64(t_command64 *cmd, t_list **lst);
+char get_section_64(t_list *slist, uint8_t nsect, size_t slist_len);
+void print_symtab_64(const void *ptr);
 void sort_and_print(t_list *symlist);
 #endif

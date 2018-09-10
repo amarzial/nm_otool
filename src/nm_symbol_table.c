@@ -36,7 +36,8 @@ static char get_symbol_type(const t_nlist *nlist, t_list *slist)
     return ((nlist->n_type & N_EXT) ? ft_toupper(l) : l);
 }
 
-static void print_symbols(const void *begin, const t_symtabcmd *tab, t_list *slist)
+static void print_symbols_64(
+	const void *begin, const t_symtabcmd *tab, t_list *slist)
 {
     t_nlist *    lst;
     unsigned int i;
@@ -65,7 +66,7 @@ static void print_symbols(const void *begin, const t_symtabcmd *tab, t_list *sli
 }
 
 // DYSYMTAB too?
-void print_symtab(const void* ptr)
+void print_symtab_64(const void *ptr)
 {
     t_loadcmd *  cmd;
     t_symtabcmd *symtab;

@@ -30,7 +30,7 @@ t_section64 *get_text_section(t_command64 *c)
 }
 */
 
-char get_section(t_list *slist, uint8_t nsect, size_t slist_len)
+char get_section_64(t_list *slist, uint8_t nsect, size_t slist_len)
 {
     t_section64 *sect;
 
@@ -51,7 +51,7 @@ char get_section(t_list *slist, uint8_t nsect, size_t slist_len)
         return ('s');
 }
 
-int store_sections(t_command64 *cmd, t_list **lst)
+int store_sections_64(t_command64 *cmd, t_list **lst)
 {
     uint32_t     n_sects;
     t_section64 *sect;

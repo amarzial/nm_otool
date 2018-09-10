@@ -18,9 +18,14 @@
 #include <ar.h>
 #include <mach-o/loader.h>
 #include <mach-o/nlist.h>
+#include <mach-o/fat.h>
 #include <stddef.h>
 #include <sys/mman.h>
 #include <unistd.h>
+
+#define FT_MACH32 1
+#define FT_MACH64 2
+#define FT_MACHUN 4
 
 typedef struct mach_header_64     t_header64;
 typedef struct segment_command_64 t_command64;
