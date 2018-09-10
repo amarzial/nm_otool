@@ -27,12 +27,18 @@
 #define FT_MACH64 2
 #define FT_MACHUN 4
 
+typedef struct load_command       t_loadcmd;
+typedef struct symtab_command     t_symtabcmd;
+
+typedef struct mach_header        t_header32;
+typedef struct segment_command    t_command32;
+typedef struct section            t_section32;
+typedef struct nlist              t_nlist32;
+
 typedef struct mach_header_64     t_header64;
 typedef struct segment_command_64 t_command64;
 typedef struct section_64         t_section64;
-typedef struct load_command       t_loadcmd;
-typedef struct symtab_command     t_symtabcmd;
-typedef struct nlist_64           t_nlist;
+typedef struct nlist_64           t_nlist64;
 
 typedef struct s_file_map
 {

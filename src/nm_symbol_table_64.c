@@ -12,7 +12,7 @@
 
 #include "nm.h"
 
-static char get_symbol_type(const t_nlist *nlist, t_list *slist)
+static char get_symbol_type_64(const t_nlist64 *nlist, t_list *slist)
 {
 	char		  l;
 	unsigned char t;
@@ -39,13 +39,13 @@ static char get_symbol_type(const t_nlist *nlist, t_list *slist)
 static void print_symbols_64(
 	const void *begin, const t_symtabcmd *tab, t_list *slist)
 {
-	t_nlist *	lst;
+	t_nlist64 *	lst;
 	unsigned int i;
 	t_symbol	 symbol;
 	t_list *	 symlist;
 
 	i = tab->nsyms;
-	lst = (t_nlist *)((char *)begin + tab->symoff);
+	lst = (t_nlist64 *)((char *)begin + tab->symoff);
 	symlist = NULL;
 	while (i--)
 	{
@@ -55,13 +55,13 @@ static void print_symbols_64(
 			symbol.has_value = 1;
 			symbol.value = lst->n_value;
 		}
-		symbol.type = get_symbol_type(lst, slist);
+		symbol.type = get_symbol_type_64(lst, slist);
 		symbol.name = (char *)begin + tab->stroff + lst->n_un.n_strx;
 		if (symbol.type != '-')
 			ft_lstadd(&symlist, ft_lstnew(&symbol, sizeof(t_symbol)));
-		lst = (t_nlist *)((char *)lst + sizeof(t_nlist));
+		lst = (t_nlist64 *)((char *)lst + sizeof(t_nlist64));
 	}
-	sort_and_print(symlist);
+	sort_and_print(symlist, 64);
 	ft_lstdel(&symlist, delete_list);
 }
 
@@ -71,11 +71,11 @@ void print_symtab_64(const void *ptr)
 	t_loadcmd *  cmd;
 	t_symtabcmd *symtab;
 	t_list *	 slist;
-	t_header64 * h64;
+	t_header64 * hdr;
 	int			 ncmds;
 
-	h64 = (t_header64 *)ptr;
-	ncmds = h64->ncmds;
+	hdr = (t_header64 *)ptr;
+	ncmds = hdr->ncmds;
 	cmd = (t_loadcmd *)((char *)ptr + sizeof(t_header64));
 	slist = NULL;
 	while (ncmds--)

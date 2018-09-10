@@ -2,8 +2,10 @@ SOURCE_FILES = file_mapper.c \
 			   utils.c \
 			   archive_reader.c
 
-NM_SOURCE_FILES = nm_symbol_table.c \
-				  nm_sections.c \
+NM_SOURCE_FILES = nm_symbol_table_32.c \
+				  nm_symbol_table_64.c \
+				  nm_sections_32.c \
+				  nm_sections_64.c \
 				  nm_sorted_print.c
 
 SOURCE_DIR = src/

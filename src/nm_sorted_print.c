@@ -57,19 +57,25 @@ static void sort_list(t_list *symlist)
 	}
 }
 
-void sort_and_print(t_list *symlist)
+void sort_and_print(t_list *symlist, size_t size)
 {
 	t_symbol *symbol;
+	char *blank;
 
+	blank = "                                ";
 	sort_list(symlist);
 	while (symlist)
 	{
 		symbol = (t_symbol *)symlist->content;
 		if (!symbol->has_value)
-			ft_printf("                ");
+			ft_printf("%.*s", size / 8 * 2, blank);
 		else
-			ft_printf("%.16llx", symbol->value);
-
+		{
+			if (size / 8 == 4)
+				ft_printf("%.8lx", symbol->value);
+			else
+				ft_printf("%.16llx", symbol->value);
+		}
 		ft_printf(" %c %s\n", symbol->type, symbol->name);
 		symlist = symlist->next;
 	}
