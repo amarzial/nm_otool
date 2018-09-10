@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nm.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarzial <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/17 17:15:47 by amarzial          #+#    #+#             */
-/*   Updated: 2018/05/18 12:22:23 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/11 12:46:58 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,54 +14,21 @@
 #include "internal.h"
 #include "libft.h"
 
-void print_header_64(t_header64 *h)
+static void print_symtab_handler(void *ptr, int arch)
 {
-	ft_printf(
-		"Mach-o 64 header:\n  Magic number: %x\n  Cpu type: %u\n  \
-Cpu subtype: %u\n  Filetype: %u\n  ncmds: %u\n  sizeofcmds: %u\n  \
-flags: %u\n  reserved: %u\n",
-		h->magic, h->cputype, h->cpusubtype, h->filetype, h->ncmds,
-		h->sizeofcmds, h->flags, h->reserved);
-}
+	void *data;
 
-void print_command_64(t_command64 *c, size_t of)
-{
-	char segname[17];
-
-	ft_memcpy(segname, c->segname, 16);
-	segname[16] = '\0';
-	ft_printf(
-		"Command:%#x\n  cmd: %#x\n  cmdsize: %u\n  \
-segname: %s\n  vmaddr: %llu\n  vmsize: %llu\n  fileoff: %llu\n  \
-filesize: %llu\n  maxprot: %u\n  initprot: %u\n  nsects: %u\n  flags: %u\n",
-		of, c->cmd, c->cmdsize, segname, c->vmaddr, c->vmsize, c->fileoff,
-		c->filesize, c->maxprot, c->initprot, c->nsects, c->flags);
-}
-
-static void print_symtab_handler(const void *ptr, int arch)
-{
+	data = ptr;
+	if (arch == FT_MACHUN)
+	{
+		arch = fat_get_best(&data);
+	}
+	
 	if (arch == FT_MACH32)
-		print_symtab_32(ptr);
+		print_symtab_32(data);
 	else if (arch == FT_MACH64)
-		print_symtab_64(ptr);
-	else if (arch == FT_MACHUN)
-		return ;
+		print_symtab_64(data);
 	return ;
-}
-
-static int is_mach_o(void *ptr)
-{
-	uint32_t magic;
-
-	magic = *(uint32_t *)ptr;
-	if (magic == MH_MAGIC)
-		return (FT_MACH32);
-	else if (magic == MH_MAGIC_64)
-		return (FT_MACH64);
-	else if (magic == FAT_CIGAM)
-		return (FT_MACHUN);
-
-	return (0);
 }
 
 static void handle_file(t_list *current, t_list *lst, \
