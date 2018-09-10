@@ -25,7 +25,7 @@ INCLUDE_DIR = include/
 INCLUDES = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))
 
 LIBFT_PATH = ./libft/
-LIBFT_HEADER = $(LIBFT_PATH)includes/
+LIBFT_HEADER = $(LIBFT_PATH)include/
 
 TEST_PATH = ./test/
 
