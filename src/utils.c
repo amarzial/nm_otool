@@ -14,7 +14,7 @@
 
 void delete_list(void *p, size_t size)
 {
-    (void) size;
-    if (p)
-        free(p);
+	(void)size;
+	if (p)
+		free(p);
 }

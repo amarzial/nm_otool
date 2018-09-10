@@ -15,21 +15,21 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
-int             map_file(char *filename, t_file_map *map)
+int map_file(char *filename, t_file_map *map)
 {
-    int         fd;
-    struct stat st;
+	int			fd;
+	struct stat st;
 
-    if ((fd = open(filename, O_RDONLY)) >= 3)
-    {
-        if (!fstat(fd, &st))
-        {
-            map->size = st.st_size;
-            map->ptr = mmap(NULL, map->size, PROT_READ, MAP_PRIVATE, fd, 0);
-            if (map->ptr != MAP_FAILED && !close(fd))
-                return (0);
-        }
-    }
-    close(fd);
-    return (-1);
+	if ((fd = open(filename, O_RDONLY)) >= 3)
+	{
+		if (!fstat(fd, &st))
+		{
+			map->size = st.st_size;
+			map->ptr = mmap(NULL, map->size, PROT_READ, MAP_PRIVATE, fd, 0);
+			if (map->ptr != MAP_FAILED && !close(fd))
+				return (0);
+		}
+	}
+	close(fd);
+	return (-1);
 }
