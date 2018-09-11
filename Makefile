@@ -1,73 +1,67 @@
-SOURCE_FILES = file_mapper.c \
-			   utils.c \
-			   archive_reader.c \
-			   fat.c
+SRC = src/file_mapper.c \
+	  src/utils.c \
+	  src/archive_reader.c \
+	  src/fat.c
 
-NM_SOURCE_FILES = nm_symbol_table_32.c \
-				  nm_symbol_table_64.c \
-				  nm_sections_32.c \
-				  nm_sections_64.c \
-				  nm_sorted_print.c
+NM_SRC = src/nm.c \
+		 src/nm_symbol_table_32.c \
+		 src/nm_symbol_table_64.c \
+		 src/nm_sections_32.c \
+		 src/nm_sections_64.c \
+		 src/nm_sorted_print.c
 
-SOURCE_DIR = src/
-SOURCES = $(addprefix $(SOURCE_DIR), $(SOURCE_FILES))
-NM_SOURCES = $(addprefix $(SOURCE_DIR), $(SOURCE_FILES))
+OTOOL_SRC = src/otool.c	\
+			src/otool_print_text_section_64.c
+
+OBJ=$(addprefix obj/,$(notdir $(SRC:.c=.o)))
+DEP=$(addprefix .d/,$(notdir $(SRC:.c=.d)))
+
+NM_OBJ=$(addprefix obj/,$(notdir $(NM_SRC:.c=.o)))
+NM_DEP=$(addprefix .d/,$(notdir $(NM_SRC:.c=.d)))
+
+OTOOL_OBJ=$(addprefix obj/,$(notdir $(OTOOL_SRC:.c=.o)))
+OTOOL_DEP=$(addprefix .d/,$(notdir $(OTOOL_SRC:.c=.d)))
 
 
-OBJECT_FILES = $(SOURCE_FILES:.c=.o)
-NM_OBJECT_FILES = $(NM_SOURCE_FILES:.c=.o)
-OBJECT_DIR = obj/
-OBJECTS = $(addprefix $(OBJECT_DIR), $(OBJECT_FILES))
-NM_OBJECTS = $(addprefix $(OBJECT_DIR), $(NM_OBJECT_FILES))
+CC=gcc
+CFLAGS=-Wall -Werror -Wextra -O2
+LDFLAGS=
+COMPILE.c=$(CC) $(CFLAGS) -c
+LINK.o=$(CC) $(LDFLAGS)
+OUTPUT_OPTION= -MMD -MP -MF $(patsubst %.o,.d/%.d,$(notdir $@)) -o $@
 
-INCLUDE_FILES = header.h\
-				internal.h\
-				nm.h
-
-INCLUDE_DIR = include/
-INCLUDES = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))
-
-LIBFT_PATH = ./libft/
-LIBFT_HEADER = $(LIBFT_PATH)include/
-
-TEST_PATH = ./test/
-
-vpath %.c $(SOURCE_DIR)
-
-CC = gcc
-CFLAGS = -Wall -Werror -Wextra
-OFLAGS = -O2
+obj/%.o: src/%.c
+	@mkdir -p obj/
+	@mkdir -p .d/
+	$(COMPILE.c) $(OUTPUT_OPTION) $< -Iinclude -Ilibft/include/
 
 NM = nm
 OTOOL = otool
 
-.PHONY: all clean fclean re link test
+.PHONY: all clean fclean re
 
 all: $(NM) $(OTOOL)
 
-$(NM): $(OBJECTS) $(NM_OBJECTS) $(OBJECT_DIR)$(NM).o
-	make -C $(LIBFT_PATH)
-	$(CC) $(DEBUG) -o $(NM) $(OBJECT_DIR)$(NM).o $(OBJECTS) $(NM_OBJECTS) $(LIBFT_PATH)libft.a
+$(NM): libft/libft.a $(OBJ) $(NM_OBJ)
+	$(LINK.o) -o $@ $(OBJ) $(NM_OBJ) -Llibft -lft
 
-$(OTOOL): $(OBJECTS) $(OBJECT_DIR)$(OTOOL).o
-	make -C $(LIBFT_PATH)
-	$(CC) $(DEBUG) -o $(OTOOL) $(OBJECT_DIR)$(OTOOL).o $(OBJECTS) $(LIBFT_PATH)libft.a
-	
-$(OBJECT_DIR)%.o: %.c $(INCLUDES)
-	mkdir -p $(OBJECT_DIR)
-	$(CC) $(DEBUG) -c -fPIC -o $@ $(OFLAGS) $(CFLAGS) $< -I$(INCLUDE_DIR) -I$(LIBFT_HEADER)
+$(OTOOL): libft/libft.a $(OBJ) $(OTOOL_OBJ)
+	$(LINK.o) -o $@ $(OBJ) $(OTOOL_OBJ) -Llibft -lft
 
 clean:
-	make -C $(LIBFT_PATH) clean
-	rm -f $(OBJECTS)
-	rm -rf $(OBJECT_DIR)
+	make -C libft clean
+	rm -rf .d/
+	rm -rf obj/
 
 fclean: clean
-	make -C $(LIBFT_PATH) fclean
-	rm -f $(NM)
-	rm -f $(OTOOL)
+	make -C libft fclean
+	rm -f $(NAME)
 
 re: fclean all
 
-test: $(LINK)
-	make -C $(TEST_PATH)
+libft/libft.a:
+	make -C libft
+
+-include $(DEP)
+-include $(NM_DEP)
+-include $(OTOOL_DEP)
