@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/17 17:15:47 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/11 12:46:58 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/11 15:57:06 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void handle_archive(t_file_map *fm, const char *archive_file)
 
 	if ((current = lst = get_archive_list(fm)) == NULL)
 		return;
-	ft_printf("The archive contains %d files\n", ft_lstlen(lst));
+	//ft_printf("The archive contains %d files\n", ft_lstlen(lst));
 	while (current != NULL)
 	{
 		handle_file(current, lst, archive_file);
@@ -67,25 +67,40 @@ static void handle_archive(t_file_map *fm, const char *archive_file)
 	ft_lstdel(&lst, delete_list);
 }
 
-int main(int argc, char **argv)
+static int nm_nm(char* filename, int showname)
 {
 	t_file_map	map;
 	int			arch;
 
-	if (argc != 2)
-		return (-1);
-	if (!map_file(argv[1], &map))
+	if (!map_file(filename, &map))
 	{
 		if ((arch = is_mach_o(map.ptr)))
+		{
+			if (showname)
+				ft_printf("%s:\n", filename);
 			print_symtab_handler(map.ptr, arch);
+		}
 		else if (is_archive_file(&map))
-			handle_archive(&map, argv[1]);
+			handle_archive(&map, filename);
 		else
 		{
 			ft_printf("Not a Mach-O file\n");
 			return (-1);
 		}
 	}
+	return (0);
+}
 
+int main(int argc, char **argv)
+{
+	int			i;
+
+	if (argc < 2)
+		return (-1);
+	i = 0;
+	while (++i < argc)
+	{
+		nm_nm(argv[i], argc > 2);
+	}
 	return (0);
 }
