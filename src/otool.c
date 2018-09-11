@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   otool.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarzial <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 14:09:47 by amarzial          #+#    #+#             */
-/*   Updated: 2018/05/29 18:34:20 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/11 15:30:19 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,39 +15,17 @@
 #include <mach-o/loader.h>
 #include <mach-o/nlist.h>
 
-void print_header_64(t_header64 *h)
-{
-	ft_printf(
-		"Mach-o 64 header:\n  Magic number: %x\n  Cpu type: %u\n  \
-Cpu subtype: %u\n  Filetype: %u\n  ncmds: %u\n  sizeofcmds: %u\n  \
-flags: %u\n  reserved: %u\n",
-		h->magic, h->cputype, h->cpusubtype, h->filetype, h->ncmds,
-		h->sizeofcmds, h->flags, h->reserved);
-}
-
-void print_command_64(t_command64 *c, size_t of)
-{
-	char segname[17];
-
-	ft_memcpy(segname, c->segname, 16);
-	segname[16] = '\0';
-	ft_printf(
-		"Command:%#x\n  cmd: %#x\n  cmdsize: %u\n  \
-segname: %s\n  vmaddr: %llu\n  vmsize: %llu\n  fileoff: %llu\n  \
-filesize: %llu\n  maxprot: %u\n  initprot: %u\n  nsects: %u\n  flags: %u\n",
-		of, c->cmd, c->cmdsize, segname, c->vmaddr, c->vmsize, c->fileoff,
-		c->filesize, c->maxprot, c->initprot, c->nsects, c->flags);
-}
-
-void print_mem(void *mem, size_t size)
+static void print_mem(void *mem, size_t size, uint64_t addr)
 {
 	size_t i;
+	size_t offset;
 
 	i = 0;
 	while (i < size)
 	{
+		offset = i + addr;
 		if (i % 0x10 == 0)
-			ft_printf("%016llx\t", i);
+			ft_printf("%016llx\t", offset);
 		ft_printf("%02hhx", *((char *)mem + i));
 		if (i % 0x10 != 0xf)
 			ft_putchar(' ');
@@ -76,31 +54,11 @@ t_section64 *get_text_section(t_command64 *c, void *begin)
 			ft_printf(
 				"Contents of (%.16s,%.16s) section\n", seg->segname,
 				seg->sectname);
-			print_mem((char *)begin + seg->offset, seg->size);
+			print_mem((char *)begin + seg->offset, seg->size, seg->addr);
 		}
 		++i;
 	}
 	return seg;
-}
-
-void print_symtab(struct load_command *lc, void *begin)
-{
-	struct symtab_command *sc;
-	struct nlist_64 *	  nlist;
-	unsigned int		   i;
-
-	sc = (struct symtab_command *)lc;
-	i = 0;
-	nlist = (struct nlist_64 *)((char *)begin + sc->symoff);
-	while (i < sc->nsyms)
-	{
-		ft_printf("%s\n", (char *)begin + (sc->stroff + nlist->n_un.n_strx));
-		ft_printf(
-			"  type: %#.2x\n  sect: %d\n  desc: %#.4x\n  value: %#.16x\n",
-			nlist->n_type, nlist->n_sect, nlist->n_desc, nlist->n_value);
-		nlist = (struct nlist_64 *)((char *)nlist + sizeof(struct nlist_64));
-		++i;
-	}
 }
 
 int main(int argc, char **argv)
