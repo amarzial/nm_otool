@@ -11,6 +11,7 @@ NM_SRC = src/nm.c \
 		 src/nm_sorted_print.c
 
 OTOOL_SRC = src/otool.c	\
+			src/otool_print_text_section_32.c \
 			src/otool_print_text_section_64.c
 
 OBJ=$(addprefix obj/,$(notdir $(SRC:.c=.o)))
