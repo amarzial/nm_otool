@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 14:09:47 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/12 16:18:33 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/14 15:55:53 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static void handle_archive(t_file_map *fm, const char *archive_file)
 
 	if ((current = lst = get_archive_list(fm)) == NULL)
 		return;
-	//ft_printf("The archive contains %d files\n", ft_lstlen(lst));
 	while (current != NULL)
 	{
 		handle_file(current, archive_file);
@@ -74,6 +73,7 @@ static int otool_otool(char* filename, int showname){
 
 	if (!map_file(filename, &map))
 	{
+		set_current_file(&map);
 		if ((arch = is_mach_o(map.ptr)))
 		{
 			if (showname)
@@ -87,6 +87,7 @@ static int otool_otool(char* filename, int showname){
 			ft_printf("Not a Mach-O file\n");
 			return (-1);
 		}
+		unmap_file(&map);
 	}
 	return (0);
 }

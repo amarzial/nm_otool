@@ -1,37 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/15 19:25:16 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/14 13:54:23 by amarzial         ###   ########.fr       */
+/*   Created: 2018/09/14 12:07:40 by amarzial          #+#    #+#             */
+/*   Updated: 2018/09/14 13:53:39 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "internal.h"
+#include <internal.h>
 
-void delete_list(void *p, size_t size)
+static t_file_map *g_current_file;
+
+void set_current_file(t_file_map *map)
 {
-	(void)size;
-	if (p)
-		free(p);
+	g_current_file = map;
 }
 
-int is_mach_o(void *ptr)
+int check_space(void *ptr, size_t size)
 {
-	uint32_t magic;
-
-	if (!check_space(ptr, sizeof(uint32_t)))
-		return (FT_MACHNO);
-	magic = *(uint32_t *)ptr;
-	if (magic == MH_MAGIC)
-		return (FT_MACH32);
-	else if (magic == MH_MAGIC_64)
-		return (FT_MACH64);
-	else if (magic == FAT_CIGAM)
-		return (FT_MACHUN);
-
-	return (FT_MACHNO);
+	if (!ptr || !g_current_file)
+		return (0);
+	return (g_current_file->size - ((char*)ptr - (char*)g_current_file->ptr) \
+		>= size);
 }

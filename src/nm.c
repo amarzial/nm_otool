@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/17 17:15:47 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/12 16:18:27 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/14 12:51:56 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static int nm_nm(char* filename, int showname)
 
 	if (!map_file(filename, &map))
 	{
+		set_current_file(&map);
 		if ((arch = is_mach_o(map.ptr)))
 		{
 			if (showname)
@@ -87,6 +88,7 @@ static int nm_nm(char* filename, int showname)
 			ft_printf("Not a Mach-O file\n");
 			return (-1);
 		}
+		unmap_file(&map);
 	}
 	return (0);
 }

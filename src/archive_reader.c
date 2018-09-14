@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   archive_reader.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarzial <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 17:03:37 by amarzial          #+#    #+#             */
-/*   Updated: 2018/05/15 19:33:30 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/14 15:58:53 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,34 @@
 
 int is_archive_file(const t_file_map *fm)
 {
+	if (!check_space(fm->ptr, SARMAG))
+		return (0);
 	return (ft_strncmp(fm->ptr, ARMAG, SARMAG) == 0);
+}
+
+static void *cleanup(t_list **lst)
+{
+	ft_lstdel(lst, delete_list);
+	return (NULL);
 }
 
 t_list *get_archive_list(const t_file_map *fm)
 {
-	t_list *	   file_list;
+	t_list *	   file_lst;
 	t_list *	   tmp;
 	int			   member_size;
 	size_t		   offset;
 	struct ar_hdr *member_header;
 
 	offset = SARMAG;
-	file_list = NULL;
+	file_lst = NULL;
 	while (offset < fm->size)
 	{
+		if (!check_space((char *)(fm->ptr) + offset, sizeof(struct ar_hdr)))
+			return (cleanup(&file_lst));
 		member_header = (struct ar_hdr *)((char *)(fm->ptr) + offset);
-		if (file_list == NULL)
-			file_list = tmp =
-				ft_lstnew(&member_header, sizeof(struct ar_hdr *));
+		if (file_lst == NULL)
+			file_lst = tmp = ft_lstnew(&member_header, sizeof(struct ar_hdr *));
 		else
 		{
 			tmp->next = ft_lstnew(&member_header, sizeof(struct ar_hdr *));
@@ -41,7 +50,7 @@ t_list *get_archive_list(const t_file_map *fm)
 		member_size = atoi(member_header->ar_size);
 		offset += sizeof(struct ar_hdr) + member_size;
 	}
-	return file_list;
+	return file_lst;
 }
 
 char *get_file_name(void *ptr)

@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/05 18:47:39 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/11 12:17:26 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/14 13:54:34 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_file_map
 } t_file_map;
 
 int map_file(char *filename, t_file_map *map);
+void unmap_file(t_file_map *map);
 
 void delete_list(void *p, size_t size);
 int is_mach_o(void *ptr);
@@ -60,5 +61,8 @@ char *get_file_name(void *ptr);
 void *get_file_begin(void *ptr);
 
 int fat_get_best(void **ptr);
+
+void set_current_file(t_file_map *map);
+int check_space(void *ptr, size_t size);
 
 #endif

@@ -1,7 +1,8 @@
 SRC = src/file_mapper.c \
 	  src/utils.c \
 	  src/archive_reader.c \
-	  src/fat.c
+	  src/fat.c \
+	  src/error_handling.c
 
 NM_SRC = src/nm.c \
 		 src/nm_symbol_table_32.c \
@@ -36,8 +37,8 @@ obj/%.o: src/%.c
 	@mkdir -p .d/
 	$(COMPILE.c) $(OUTPUT_OPTION) $< -Iinclude -Ilibft/include/
 
-NM = nm
-OTOOL = otool
+NM = ft_nm
+OTOOL = ft_otool
 
 .PHONY: all clean fclean re
 
