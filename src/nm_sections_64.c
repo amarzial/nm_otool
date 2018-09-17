@@ -6,32 +6,13 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/22 14:44:00 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/17 13:52:43 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 14:07:57 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
 
-/*
-t_section64 *get_text_section(t_command64 *c)
-{
-	t_section64 *seg;
-	unsigned int i;
-
-	i = 0;
-	seg = NULL;
-	while (i < c->nsects)
-	{
-		seg = (void *) ((char *) c + sizeof(t_command64) + (i *
-sizeof(t_section64))); ft_printf("sectname: %.16s, segname: %.16s\n",
-seg->sectname, seg->segname);
-		++i;
-	}
-	return seg;
-}
-*/
-
-char get_section_64(t_list *slist, uint8_t nsect, size_t slist_len)
+char	get_section_64(t_list *slist, uint8_t nsect, size_t slist_len)
 {
 	t_section64 *sect;
 
@@ -52,17 +33,17 @@ char get_section_64(t_list *slist, uint8_t nsect, size_t slist_len)
 		return ('s');
 }
 
-int store_sections_64(t_command64 *cmd, t_list **lst)
+int		store_sections_64(t_command64 *cmd, t_list **lst)
 {
-	uint32_t	 n_sects;
-	t_section64 *sect;
+	uint32_t		n_sects;
+	t_section64		*sect;
 
 	sect = (t_section64 *)((char *)cmd + sizeof(t_command64));
 	n_sects = cmd->nsects;
 	while (n_sects--)
 	{
-        if (!check_space(sect, sizeof(t_section64)))
-            break ;
+		if (!check_space(sect, sizeof(t_section64)))
+			break ;
 		ft_lstadd(lst, ft_lstnew(&sect, sizeof(t_section64 *)));
 		sect = (t_section64 *)((char *)sect + sizeof(t_section64));
 	}

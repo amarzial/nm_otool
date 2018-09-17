@@ -6,20 +6,20 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 19:25:16 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/17 13:53:35 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 14:23:22 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "internal.h"
 
-void delete_list(void *p, size_t size)
+void	delete_list(void *p, size_t size)
 {
 	(void)size;
 	if (p)
 		free(p);
 }
 
-int is_mach_o(void *ptr)
+int		is_mach_o(void *ptr)
 {
 	uint32_t magic;
 

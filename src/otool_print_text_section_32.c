@@ -6,13 +6,13 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/11 16:40:33 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/17 13:26:36 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 14:04:52 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "internal.h"
 
-static void print_mem(void *mem, size_t size, uint64_t addr)
+static void			print_mem(void *mem, size_t size, uint64_t addr)
 {
 	size_t i;
 	size_t offset;
@@ -33,17 +33,19 @@ static void print_mem(void *mem, size_t size, uint64_t addr)
 	ft_putchar('\n');
 }
 
-static t_section32 *get_text_section(t_command32 *c, void *begin)
+static t_section32	*get_text_section(t_command32 *c, void *begin)
 {
-	t_section32 *seg;
-	unsigned int i;
+	t_section32		*seg;
+	unsigned int	i;
 
 	i = 0;
 	seg = NULL;
 	while (i < c->nsects)
 	{
-		seg = (void*)((char *)c + sizeof(t_command32) + (i * sizeof(t_section32)));
-		if (!check_space(seg, sizeof(t_section32)) && !check_space((char*)seg + sizeof(t_section32), seg->size))
+		seg = (void*)((char *)c \
+			+ sizeof(t_command32) + (i * sizeof(t_section32)));
+		if (!check_space(seg, sizeof(t_section32)) &&
+			!check_space((char *)seg + sizeof(t_section32), seg->size))
 			return (NULL);
 		if (ft_strcmp(seg->sectname, "__text") == 0 &&
 			ft_strcmp(seg->segname, "__TEXT") == 0)
@@ -55,10 +57,10 @@ static t_section32 *get_text_section(t_command32 *c, void *begin)
 		}
 		++i;
 	}
-	return seg;
+	return (seg);
 }
 
-void print_text_section_32(void *ptr)
+void				print_text_section_32(void *ptr)
 {
 	t_header32	*hdr;
 	size_t		offset;
@@ -76,10 +78,6 @@ void print_text_section_32(void *ptr)
 		if (lc->cmd == LC_SEGMENT)
 		{
 			get_text_section((t_command32 *)lc, ptr);
-		}
-		else if (lc->cmd == LC_SYMTAB)
-		{
-			// print_symtab(lc, map.ptr);
 		}
 		offset += lc->cmdsize;
 		++cmds;

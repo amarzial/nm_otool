@@ -6,17 +6,17 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/22 14:40:56 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/17 13:50:17 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 14:12:00 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
 
-static char get_symbol_type_64(const t_nlist64 *nlist, t_list *slist)
+static char	get_symbol_type_64(const t_nlist64 *nlist, t_list *slist)
 {
-	char		  l;
-	unsigned char t;
-	size_t		  slist_len;
+	char			l;
+	unsigned char	t;
+	size_t			slist_len;
 
 	slist_len = ft_lstlen(slist);
 	t = (nlist->n_type & N_TYPE);
@@ -32,17 +32,16 @@ static char get_symbol_type_64(const t_nlist64 *nlist, t_list *slist)
 		l = 'i';
 	else
 		l = '#';
-
 	return ((nlist->n_type & N_EXT) ? ft_toupper(l) : l);
 }
 
-static void print_symbols_64(
+static void	print_symbols_64(
 	const void *begin, const t_symtabcmd *tab, t_list *slist)
 {
-	t_nlist64 *	lst;
-	unsigned int i;
-	t_symbol	 symbol;
-	t_list *	 symlist;
+	t_nlist64		*lst;
+	unsigned int	i;
+	t_symbol		symbol;
+	t_list			*symlist;
 
 	i = tab->nsyms;
 	lst = (t_nlist64 *)((char *)begin + tab->symoff);
@@ -65,14 +64,13 @@ static void print_symbols_64(
 	ft_lstdel(&symlist, delete_list);
 }
 
-// DYSYMTAB too?
-void print_symtab_64(const void *ptr)
+void		print_symtab_64(const void *ptr)
 {
-	t_loadcmd *  cmd;
-	t_symtabcmd *symtab;
-	t_list *	 slist;
-	t_header64 * hdr;
-	int			 ncmds;
+	t_loadcmd	*cmd;
+	t_symtabcmd	*symtab;
+	t_list		*slist;
+	t_header64	*hdr;
+	int			ncmds;
 
 	hdr = (t_header64 *)ptr;
 	ncmds = hdr->ncmds;
@@ -80,8 +78,8 @@ void print_symtab_64(const void *ptr)
 	slist = NULL;
 	while (ncmds--)
 	{
-        if (!check_space(cmd, sizeof(t_loadcmd)))
-            break ;
+		if (!check_space(cmd, sizeof(t_loadcmd)))
+			break ;
 		if (cmd->cmd == LC_SEGMENT_64)
 			store_sections_64((t_command64 *)cmd, &slist);
 		if (cmd->cmd == LC_SYMTAB)

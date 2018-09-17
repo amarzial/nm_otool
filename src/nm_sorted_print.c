@@ -6,13 +6,13 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/22 15:48:43 by amarzial          #+#    #+#             */
-/*   Updated: 2018/06/30 15:43:08 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 14:09:00 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "nm.h"
 
-static int compare_symbol(t_symbol *s1, t_symbol *s2)
+static int		compare_symbol(t_symbol *s1, t_symbol *s2)
 {
 	int res;
 
@@ -20,7 +20,7 @@ static int compare_symbol(t_symbol *s1, t_symbol *s2)
 	return (res != 0 ? res : s1->value > s2->value);
 }
 
-static void swap_nodes(t_list *n1, t_list *n2)
+static void		swap_nodes(t_list *n1, t_list *n2)
 {
 	t_list tmp;
 
@@ -32,9 +32,9 @@ static void swap_nodes(t_list *n1, t_list *n2)
 	n2->content_size = tmp.content_size;
 }
 
-static void sort_list(t_list *symlist)
+static void		sort_list(t_list *symlist)
 {
-	t_list *cur;
+	t_list	*cur;
 	int		sorted;
 
 	sorted = 0;
@@ -57,10 +57,10 @@ static void sort_list(t_list *symlist)
 	}
 }
 
-void sort_and_print(t_list *symlist, size_t size)
+void			sort_and_print(t_list *symlist, size_t size)
 {
-	t_symbol *symbol;
-	char *blank;
+	t_symbol	*symbol;
+	char		*blank;
 
 	blank = "                                ";
 	sort_list(symlist);

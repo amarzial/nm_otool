@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/05 18:22:38 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/14 12:30:43 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 14:23:03 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
-int map_file(char *filename, t_file_map *map)
+int		map_file(char *filename, t_file_map *map)
 {
 	int			fd;
 	struct stat st;
@@ -34,7 +34,7 @@ int map_file(char *filename, t_file_map *map)
 	return (-1);
 }
 
-void unmap_file(t_file_map *map)
+void	unmap_file(t_file_map *map)
 {
 	munmap(map->ptr, map->size);
 }
