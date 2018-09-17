@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/11 16:40:33 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/17 14:06:08 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 16:39:40 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,9 @@ static void			print_mem(void *mem, size_t size, uint64_t addr)
 		offset = i + addr;
 		if (i % 0x10 == 0)
 			ft_printf("%016llx\t", offset);
-		ft_printf("%02hhx", *((char *)mem + i));
-		if (i % 0x10 != 0xf)
-			ft_putchar(' ');
-		else
-			ft_putstr(" \n");
+		ft_printf("%02hhx ", *((char *)mem + i));
+		if (i % 0x10 == 0xf && i + 1 != size)
+			ft_putstr("\n");
 		++i;
 	}
 	ft_putchar('\n');

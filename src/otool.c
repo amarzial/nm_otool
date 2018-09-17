@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 14:09:47 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/17 14:02:10 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 16:25:58 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static void	handle_archive(t_file_map *fm, const char *archive_file)
 	t_list *lst;
 	t_list *current;
 
+	ft_printf("Archive : %s\n", archive_file);
 	if ((lst = get_archive_list(fm)) == NULL)
 		return ;
 	current = lst;

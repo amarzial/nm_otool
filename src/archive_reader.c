@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 17:03:37 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/17 14:17:13 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 18:38:16 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void		*get_file_begin(void *ptr)
 		name_size = ft_atoi((char *)header->ar_name + 3);
 		offset += name_size;
 	}
-	if (!check_space((char *)ptr + offset, ft_atoi(header->ar_size)))
+	if (!check_space((char*)ptr, ft_atoi(header->ar_size)))
 		return (NULL);
 	return ((char *)ptr + offset);
 }

@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/15 19:25:16 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/17 14:23:22 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 16:42:23 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int		is_mach_o(void *ptr)
 {
 	uint32_t magic;
 
-	magic = *(uint32_t *)ptr;
 	if (!check_space(ptr, sizeof(uint32_t)))
 		return (FT_MACHNO);
+	magic = *(uint32_t *)ptr;
 	if (magic == MH_MAGIC)
 		return (check_space(ptr, sizeof(t_header32)) ? FT_MACH32 : FT_MACHNO);
 	else if (magic == MH_MAGIC_64)
