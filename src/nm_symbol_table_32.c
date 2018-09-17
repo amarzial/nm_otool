@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nm_symbol_table_32.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarzial <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/22 14:40:56 by amarzial          #+#    #+#             */
-/*   Updated: 2018/05/15 19:37:22 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 13:49:17 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,12 @@ void print_symtab_32(const void *ptr)
     slist = NULL;
     while (ncmds--)
     {
+        if (!check_space(cmd, sizeof(t_loadcmd)))
+            break ;
         if (cmd->cmd == LC_SEGMENT)
-        {
             store_sections_32((t_command32 *)cmd, &slist);
-        }
         if (cmd->cmd == LC_SYMTAB)
-        {
             symtab = (t_symtabcmd *)cmd;
-        }
         cmd = (t_loadcmd *)((char *)cmd + cmd->cmdsize);
     }
     print_symbols_32(ptr, symtab, slist);

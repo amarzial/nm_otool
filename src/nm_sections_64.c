@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   nm_sections.c                                      :+:      :+:    :+:   */
+/*   nm_sections_64.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/22 14:44:00 by amarzial          #+#    #+#             */
-/*   Updated: 2018/06/30 13:13:00 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 13:52:43 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ int store_sections_64(t_command64 *cmd, t_list **lst)
 	n_sects = cmd->nsects;
 	while (n_sects--)
 	{
+        if (!check_space(sect, sizeof(t_section64)))
+            break ;
 		ft_lstadd(lst, ft_lstnew(&sect, sizeof(t_section64 *)));
 		sect = (t_section64 *)((char *)sect + sizeof(t_section64));
 	}

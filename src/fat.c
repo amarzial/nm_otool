@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/10 17:53:19 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/11 12:24:29 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 13:47:11 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int fat_get_best(void **ptr)
 	while (i < narch) {
 		arch = (t_fat_arch*)((char*)(*ptr) + sizeof(t_fat_header)\
 			+ (sizeof(t_fat_arch) * i));
+		if (!check_space(arch, sizeof(t_fat_arch)))
+			break ;
 		set_best(*ptr, big_read(arch->offset), &best_offset, &best_arch);
 		++i;
 	}

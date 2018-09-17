@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/22 14:44:00 by amarzial          #+#    #+#             */
-/*   Updated: 2018/06/30 13:13:00 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 13:52:06 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int store_sections_32(t_command32 *cmd, t_list **lst)
     n_sects = cmd->nsects;
     while (n_sects--)
     {
+        if (!check_space(sect, sizeof(t_section32)))
+            break ;
         ft_lstadd(lst, ft_lstnew(&sect, sizeof(t_section32 *)));
         sect = (t_section32 *)((char *)sect + sizeof(t_section32));
     }

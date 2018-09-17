@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/11 16:40:33 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/12 15:57:36 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 13:26:36 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ static t_section32 *get_text_section(t_command32 *c, void *begin)
 	seg = NULL;
 	while (i < c->nsects)
 	{
-		seg =
-			(void
-				 *)((char *)c + sizeof(t_command32) + (i * sizeof(t_section32)));
+		seg = (void*)((char *)c + sizeof(t_command32) + (i * sizeof(t_section32)));
+		if (!check_space(seg, sizeof(t_section32)) && !check_space((char*)seg + sizeof(t_section32), seg->size))
+			return (NULL);
 		if (ft_strcmp(seg->sectname, "__text") == 0 &&
 			ft_strcmp(seg->segname, "__TEXT") == 0)
 		{
@@ -71,6 +71,8 @@ void print_text_section_32(void *ptr)
 	while (cmds < hdr->ncmds)
 	{
 		lc = (void *)((char *)ptr + offset);
+		if (!check_space(lc, sizeof(t_loadcmd)))
+			return ;
 		if (lc->cmd == LC_SEGMENT)
 		{
 			get_text_section((t_command32 *)lc, ptr);

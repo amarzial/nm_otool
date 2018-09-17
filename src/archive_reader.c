@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 17:03:37 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/14 15:58:53 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 13:27:53 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ t_list *get_archive_list(const t_file_map *fm)
 	file_lst = NULL;
 	while (offset < fm->size)
 	{
-		if (!check_space((char *)(fm->ptr) + offset, sizeof(struct ar_hdr)))
-			return (cleanup(&file_lst));
 		member_header = (struct ar_hdr *)((char *)(fm->ptr) + offset);
+		if (!check_space(member_header, sizeof(struct ar_hdr)))
+			return (cleanup(&file_lst));
 		if (file_lst == NULL)
 			file_lst = tmp = ft_lstnew(&member_header, sizeof(struct ar_hdr *));
 		else
@@ -67,6 +67,8 @@ char *get_file_name(void *ptr)
 		name = ft_strnew(name_size);
 		if (name == NULL)
 			return (NULL);
+		if (!check_space((char *)ptr + sizeof(struct ar_hdr), name_size))
+			return (NULL);
 		ft_strncpy(name, (char *)ptr + sizeof(struct ar_hdr), name_size);
 	}
 	else
@@ -82,12 +84,16 @@ void *get_file_begin(void *ptr)
 {
 	struct ar_hdr *header;
 	size_t		   name_size;
+	size_t			offset;
 
 	header = (struct ar_hdr *)ptr;
+	offset = sizeof(struct ar_hdr);
 	if (ft_strncmp("#1/", header->ar_name, 3) == 0)
 	{
 		name_size = ft_atoi((char *)header->ar_name + 3);
-		return ((char *)ptr + sizeof(struct ar_hdr) + name_size);
+		offset += name_size;
 	}
-	return ((char *)ptr + sizeof(struct ar_hdr));
+	if (!check_space((char*)ptr + offset, ft_atoi(header->ar_size)))
+		return (NULL);
+	return ((char *)ptr + offset);
 }

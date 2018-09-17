@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 14:09:47 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/14 15:55:53 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/17 13:55:59 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static void print_text_section_handler(void *ptr, int arch)
 {
 	void *data;
 
+	if (!ptr)
+		return ;
 	data = ptr;
 	if (arch == FT_MACHUN)
 	{
@@ -31,6 +33,8 @@ static void print_text_section_handler(void *ptr, int arch)
 		print_text_section_32(data);
 	else if (arch == FT_MACH64)
 		print_text_section_64(data);
+	else
+		ft_printf("Unsupported file\n");
 	return ;
 }
 //check header health
