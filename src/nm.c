@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/17 17:15:47 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/17 14:00:21 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/18 18:41:57 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static int	nm_nm(char *filename, int showname)
 		if ((arch = is_mach_o(map.ptr)))
 		{
 			if (showname)
-				ft_printf("%s:\n", filename);
+				ft_printf("\n%s:\n", filename);
 			print_symtab_handler(map.ptr, arch);
 		}
 		else if (is_archive_file(&map))
