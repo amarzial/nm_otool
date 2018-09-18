@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/17 17:15:47 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/18 18:41:57 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/18 18:50:38 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ static void	handle_archive(t_file_map *fm, const char *archive_file)
 	ft_lstdel(&lst, delete_list);
 }
 
+//TODO: no universal file names on multi arg
 static int	nm_nm(char *filename, int showname)
 {
 	t_file_map	map;
