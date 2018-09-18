@@ -6,7 +6,7 @@
 /*   By: amarzial <amarzial@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/03 17:03:37 by amarzial          #+#    #+#             */
-/*   Updated: 2018/09/17 18:38:16 by amarzial         ###   ########.fr       */
+/*   Updated: 2018/09/18 16:16:54 by amarzial         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_list		*get_archive_list(const t_file_map *fm)
 			tmp->next = ft_lstnew(&member_header, sizeof(struct ar_hdr *));
 			tmp = tmp->next;
 		}
-		member_size = atoi(member_header->ar_size);
+		member_size = ft_atoi(member_header->ar_size);
 		offset += sizeof(struct ar_hdr) + member_size;
 	}
 	return (file_lst);
