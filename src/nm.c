@@ -69,7 +69,6 @@ static void	handle_archive(t_file_map *fm, const char *archive_file)
 	ft_lstdel(&lst, delete_list);
 }
 
-//TODO: no universal file names on multi arg
 static int	nm_nm(char *filename, int showname)
 {
 	t_file_map	map;
@@ -80,7 +79,7 @@ static int	nm_nm(char *filename, int showname)
 		set_current_file(&map);
 		if ((arch = is_mach_o(map.ptr)))
 		{
-			if (showname)
+			if (showname && arch != FT_MACHUN)
 				ft_printf("\n%s:\n", filename);
 			print_symtab_handler(map.ptr, arch);
 		}
